@@ -1,65 +1,55 @@
 import java.io.BufferedReader;
-import java.io.BufferedWriter;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.io.OutputStreamWriter;
-import java.util.LinkedList;
-import java.util.ListIterator;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Stack;
 
 public class Main {
-	public static void main(String[] args) throws IOException {
-		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-		BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
-		StringBuilder sb = new StringBuilder();
+    public static void main(String[] args) throws IOException {
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        StringBuilder sb = new StringBuilder();
 
-		LinkedList<Character> list = new LinkedList<>();
+        Stack<Character> leftStack = new Stack<>();
+        Stack<Character> rightStack = new Stack<>();
 
-		char[] ch = br.readLine().trim().toCharArray();
+        for (char c : br.readLine().toCharArray()) {
+            leftStack.push(c);
+        }
+        int M = Integer.parseInt(br.readLine());
 
-		for (int i = 0; i < ch.length; i++)
-			list.add(i, ch[i]);
+        for (int i = 0; i < M; i++) {
+            char[] command = br.readLine().toCharArray();
 
-		ListIterator<Character> iterator = list.listIterator();
-		while (iterator.hasNext())
-			iterator.next();
+            switch (command[0]) {
+                case 'L':
+                    if (!leftStack.isEmpty()) {
+                        rightStack.push(leftStack.pop());
+                    }
+                    break;
+                case 'D':
+                    if (!rightStack.isEmpty()) {
+                        leftStack.push(rightStack.pop());
+                    }
+                    break;
+                case 'B':
+                    if (!leftStack.isEmpty()) {
+                        leftStack.pop();
+                    }
+                    break;
+                case 'P':
+                    leftStack.push(command[2]);
+                    break;
+            }
+        }
 
-		int N = Integer.parseInt(br.readLine().trim());
+        for (char c : leftStack) {
+            sb.append(c);
+        }
+        while (!rightStack.isEmpty()) {
+            sb.append(rightStack.pop());
+        }
 
-		for (int i = 0; i < N; i++) {
-			String input = br.readLine().trim();
-			char cmd = input.charAt(0);
-
-			switch (cmd) {
-			case 'L': {
-				if (iterator.hasPrevious())
-					iterator.previous();
-				break;
-			}
-			case 'D': {
-				if (iterator.hasNext())
-					iterator.next();
-				break;
-			}
-			case 'B': {
-				if (iterator.hasPrevious()) {
-					iterator.previous();
-					iterator.remove();
-				}
-				break;
-			}
-			case 'P': {
-				char addChar = input.charAt(2);
-				iterator.add(addChar);
-				break;
-			}
-			}
-		}
-
-		for (Character c : list)
-			sb.append(c);
-
-		bw.append(sb.toString());
-		bw.flush();
-		bw.close();
-	}
+        System.out.println(sb);
+    }
 }
