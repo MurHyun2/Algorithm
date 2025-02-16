@@ -4,35 +4,25 @@ import java.io.InputStreamReader;
 import java.util.StringTokenizer;
 
 public class Main {
-
-	static int a, b, c, d, e, f;
-
 	public static void main(String[] args) throws IOException {
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-		StringTokenizer st = new StringTokenizer(br.readLine().trim());
+		StringTokenizer st = new StringTokenizer(br.readLine());
 
-		a = Integer.parseInt(st.nextToken());
-		b = Integer.parseInt(st.nextToken());
-		c = Integer.parseInt(st.nextToken());
-		d = Integer.parseInt(st.nextToken());
-		e = Integer.parseInt(st.nextToken());
-		f = Integer.parseInt(st.nextToken());
+		int[] arr = new int[6];
+		int x = 0;
+		int y = 0;
 
-		calXY();
-	}
+		for (int i = 0; i < 6; i++) {
+			arr[i] = Integer.parseInt(st.nextToken());
+		}
 
-	private static void calXY() {
-		// ax + by = c
-		// dx + ey = f
-		for (int x = -999; x <= 999; x++) {
-			for (int y = -999; y <= 999; y++) {
-				if ((a * x) + (b * y) == c)
-					if ((d * x) + (e * y) == f) {
-						System.out.println(x + " " + y);
-						break;
-					}
+		for (int i = -999; i < 1000; i++) {
+			for (int j = -999; j < 1000; j++) {
+				if(arr[0] * i + arr[1] * j == arr[2] && arr[3] * i + arr[4] * j == arr[5]) {
+					System.out.println(i + " " + j);
+					return;
+				}
 			}
 		}
 	}
-
 }
