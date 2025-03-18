@@ -9,14 +9,11 @@ public class Main {
         String input = br.readLine();
         String findAlp = br.readLine();
         int result = 0;
+        int index = 0;
 
-        while (input.length() >= findAlp.length()) {
-            if (input.contains(findAlp)) {
-                result++;
-                input = input.replaceFirst(findAlp, " ");
-            } else {
-                break;
-            }
+        while ((index = input.indexOf(findAlp, index)) != -1 ) {
+            result++;
+            index += findAlp.length();    
         }
 
         System.out.println(result);
