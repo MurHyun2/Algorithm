@@ -3,19 +3,8 @@ import java.util.*;
 
 public class Main {
 
-    static class Node {
-        int node;
-        int cost;
-
-        public Node(int node, int cost) {
-            this.node = node;
-            this.cost = cost;
-        }
-    }
-
-    static ArrayList<Node>[] graph;
+    static ArrayList<Integer>[] graph;
     static int[] dist;
-    static final int INF = Integer.MAX_VALUE;
 
     public static void main(String[] args) throws Exception {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
@@ -28,8 +17,7 @@ public class Main {
 
         graph = new ArrayList[N + 1];
         dist = new int[N + 1];
-
-        Arrays.fill(dist, INF);
+        Arrays.fill(dist, -1);
 
         for (int i = 1; i <= N; i++) {
             graph[i] = new ArrayList<>();
@@ -39,10 +27,10 @@ public class Main {
             st = new StringTokenizer(br.readLine());
             int u = Integer.parseInt(st.nextToken());
             int w = Integer.parseInt(st.nextToken());
-            graph[u].add(new Node(w, 1));
+            graph[u].add(w);
         }
 
-        dijkstra(X);
+        bfs(X);
 
         boolean isExist = false;
         StringBuilder sb = new StringBuilder();
@@ -54,33 +42,25 @@ public class Main {
             }
         }
 
-        if(!isExist) {
+        if (!isExist) {
             sb.append(-1);
         }
 
         System.out.println(sb);
     }
 
-    private static void dijkstra(int start) {
-        PriorityQueue<Node> pq = new PriorityQueue<>((o1, o2) -> {
-            return o1.cost - o2.cost;
-        });
-
+    private static void bfs(int start) {
+        Queue<Integer> q = new LinkedList<>();
         dist[start] = 0;
-        pq.offer(new Node(start, 0));
+        q.offer(start);
 
-        while (!pq.isEmpty()) {
-            Node now = pq.poll();
+        while (!q.isEmpty()) {
+            int now = q.poll();
 
-            if (dist[now.node] < now.cost) {
-                continue;
-            }
-
-            for (Node next : graph[now.node]) {
-                int nextCost = dist[now.node] + next.cost;
-                if (dist[next.node] > nextCost) {
-                    dist[next.node] = nextCost;
-                    pq.offer(new Node(next.node, nextCost));
+            for (int next : graph[now]) {
+                if (dist[next] == -1) {
+                    dist[next] = dist[now] + 1;
+                    q.offer(next);
                 }
             }
         }
