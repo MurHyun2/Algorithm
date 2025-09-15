@@ -12,30 +12,23 @@ public class Main {
 
         for (int i = 0; i < n; i++) {
             long cardNum = Long.parseLong(br.readLine());
-            if (map.containsKey(cardNum)) {
-                map.put(cardNum, map.get(cardNum) + 1);
-                continue;
-            }
-            map.put(cardNum, 1);
+            map.merge(cardNum, 1, Integer::sum);
         }
 
         int maxCnt = 0;
-
-        for (Map.Entry<Long, Integer> e : map.entrySet()) {
-            if (maxCnt <= e.getValue()) {
-                maxCnt = e.getValue();
-            }
-        }
-        
         long minValue = Long.MAX_VALUE;
 
         for (Map.Entry<Long, Integer> e : map.entrySet()) {
-            if (e.getValue() == maxCnt) {
-                minValue = Math.min(minValue, e.getKey());
+            int cnt = e.getValue();
+            long num = e.getKey();
+
+            if (cnt > maxCnt || (cnt == maxCnt && num < minValue)) {
+                maxCnt = cnt;
+                minValue = num;
             }
         }
 
         System.out.println(minValue);
     }
-    
+
 }
