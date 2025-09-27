@@ -7,55 +7,45 @@ class Main {
     // 트럭은 1초에 1미터 진행. 단순 구현 문제인거 같음.
     // 트럭이 출발하면 각 신호등이 1초당 상태를 업데이트 해서 시간이 넘어가면 r -> g -> r 반복되게 하면 될듯
 
-    static class trafficLight {
+    static class TrafficLight {
         int r;
         int g;
-        int time;
-        int status;
 
-        trafficLight(int r, int g, int time, int status) {
+        TrafficLight(int r, int g) {
             this.r = r;
             this.g = g;
-            this.time = time;
-            this.status = status;
         }
     }
 
-    public static void main(String[] args) throws Exception{
+    public static void main(String[] args) throws Exception {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         StringTokenizer st = new StringTokenizer(br.readLine());
 
         int n = Integer.parseInt(st.nextToken());
         int l = Integer.parseInt(st.nextToken());
-        Map<Integer, trafficLight> map = new HashMap<>();
+        TrafficLight[] lights = new TrafficLight[l + 1];
 
         for (int i = 0; i < n; i++) {
             st = new StringTokenizer(br.readLine());
             int d = Integer.parseInt(st.nextToken());
             int r = Integer.parseInt(st.nextToken());
             int g = Integer.parseInt(st.nextToken());
-            map.put(d, new trafficLight(r, g, 0, 0));
+            lights[d] = new TrafficLight(r, g);
         }
-
         //입력 끝
-        int time = 0;
-        int length = 0;
-        while (length < l) {
-            if (!(map.containsKey(length) && map.get(length).status == 0)) {
-                length++;
-            }
 
-            for (trafficLight t : map.values()) {
-                t.time++;
-                if(t.time == t.r && t.status == 0) {
-                    t.status = 1;
-                    t.time = 0;
-                } else if (t.time == t.g && t.status == 1) {
-                    t.status = 0;
-                    t.time = 0;
+        int time = 0;
+
+        for (int i = 0; i < l; i++) {
+            if (lights[i] != null) {
+                TrafficLight tf = lights[i];
+                int cycle = tf.r + tf.g;
+                int mod = time % cycle;
+
+                if (mod < tf.r) {
+                    time += (tf.r - mod);
                 }
             }
-
             time++;
         }
 
