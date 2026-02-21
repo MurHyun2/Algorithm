@@ -1,20 +1,19 @@
 import java.util.*;
-import java.io.*;
 
 class Solution
 {
     public int solution(String s)
     {
-        Stack<Character> stack = new Stack<>();
+        Deque<Character> deque = new ArrayDeque<>();
         
-        for(char ch : s.toCharArray()) {
-            if(!stack.isEmpty() && stack.peek() == ch) {
-                stack.pop();
+        for (char c : s.toCharArray()) {
+            if (!deque.isEmpty() && deque.peekLast() == c) {
+                deque.pollLast();
             } else {
-                stack.push(ch);
+                deque.offerLast(c);
             }
         }
 
-        return stack.isEmpty() ? 1 : 0;
+        return deque.isEmpty() ? 1 : 0;
     }
 }
