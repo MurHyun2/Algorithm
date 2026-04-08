@@ -1,82 +1,55 @@
 class Solution {
     public String solution(int[] numbers, String hand) {
-        int ln = 10;
-        int rn = 12;
+        int left = 10;
+        int right = 12;
+        
         StringBuilder sb = new StringBuilder();
         
-        for (int i = 0; i < numbers.length; i++) {
-            int n = numbers[i];
-            if (n == 0) n = 11;
-            if (n % 3 == 1) {
+        for (int number : numbers) {
+            if (number == 0) number = 11;
+            
+            // 1, 4, 7
+            if (number % 3 == 1) {
                 sb.append("L");
-                ln = n;
-            } else if (n % 3 == 0) {
+                left = number;
+            }
+            // 3, 6, 9
+            else if (number % 3 == 0) {
                 sb.append("R");
-                rn = n;
-            } else {
-                int left = ln;
-                int right = rn;
-                int leftDist = 0;
-                int rightDist = 0;
+                right = number;
+            }
+            // 2, 5, 8, 0
+            else {
+                int leftDistance = getDistance(left, number);
+                int rightDistance = getDistance(right, number);
                 
-                while (left != n) {
-                    if (left > n) {
-                        if (left - 3 >= n) {
-                            left -= 3;
-                            leftDist++;
-                        } else {
-                            left++;
-                            leftDist++;
-                        }
-                    } else {
-                        if (left + 3 <= n) {
-                            left += 3;
-                            leftDist++;
-                        } else {
-                            left++;
-                            leftDist++;
-                        }                        
-                    }
-                }
-                
-                while (right != n) {
-                    if (right > n) {
-                        if (right - 3 >= n) {
-                            right -= 3;
-                            rightDist++;
-                        } else {
-                            right--;
-                            rightDist++;
-                        }
-                    } else {
-                        if (right + 3 <= n) {
-                            right += 3;
-                            rightDist++;
-                        } else {
-                            right--;
-                            rightDist++;
-                        }                        
-                    }
-                }
-                
-                if (leftDist == rightDist) {
-                    if (hand.equals("right")) {
-                        sb.append("R");
-                        rn = n;
-                    } else {
-                        sb.append("L");
-                        ln = n;
-                    }
-                } else if (leftDist > rightDist) {
-                    sb.append("R");
-                    rn = n;
-                } else {
+                if (leftDistance < rightDistance) {
                     sb.append("L");
-                    ln = n;
+                    left = number;
+                } else if (leftDistance > rightDistance) {
+                    sb.append("R");
+                    right = number;
+                } else {
+                    if (hand.equals("left")) {
+                        sb.append("L");
+                        left = number;
+                    } else {
+                        sb.append("R");
+                        right = number;
+                    }
                 }
             }
         }
         
         return sb.toString();
+    }
+    
+    private static int getDistance(int from, int to) {
+        int fromRow = (from - 1) / 3;
+        int fromCol = (from - 1) % 3;
+        int toRow = (to - 1) / 3;
+        int toCol = (to - 1) % 3;
+        
+        return Math.abs(fromRow - toRow) + Math.abs(fromCol - toCol);
     }
 }
