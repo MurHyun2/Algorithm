@@ -10,22 +10,21 @@ class Solution {
         return max;
     }
     
-    void dfs(int fatigue, int[][] dungeons, int cnt) {
-        max = Math.max(max, cnt);
+    private void dfs(int fatigue, int[][] dungeons, int count) {
+        max = Math.max(max, count);
         
         for (int i = 0; i < dungeons.length; i++) {
             int need = dungeons[i][0];
             int use = dungeons[i][1];
             
-            if (fatigue >= need && !visited[i]) {
+            if (!visited[i] && fatigue >= need) {
                 visited[i] = true;
-                dfs(fatigue - use, dungeons, cnt + 1);
+                dfs(fatigue - use, dungeons, count + 1);
                 visited[i] = false;
             }
         }
     }
 }
-
 
 /*
 최소 피로도 -> 입장을 위한 피로도, 소모 피로도 -> 던전 탐험 후 소모 피로도
