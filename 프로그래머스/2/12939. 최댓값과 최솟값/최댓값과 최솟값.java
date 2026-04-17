@@ -1,21 +1,21 @@
 import java.util.*;
-import java.io.*;
 
 class Solution {
     public String solution(String s) {
-        StringBuilder sb = new StringBuilder();
+        String[] str = s.split(" ");
+        int min = Integer.MAX_VALUE;
+        int max = Integer.MIN_VALUE;
         
-        String[] sArr = s.split(" ");
-        int[] iArr = new int[sArr.length];
-        
-        for (int i = 0; i < sArr.length; i++) {
-            iArr[i] = Integer.parseInt(sArr[i]);
+        for (int i = 0; i < str.length; i++) {
+            int num = Integer.parseInt(str[i]);
+            min = Math.min(min, num);
+            max = Math.max(max, num);
         }
         
-        Arrays.sort(iArr);
-        
-        sb.append(iArr[0]).append(" ").append(iArr[iArr.length - 1]);
-        
-        return sb.toString();
+        return min + " " + max;
     }
 }
+
+/*
+다돌리면서 최소 최대
+*/
