@@ -1,29 +1,20 @@
-import java.util.*;
-import java.io.*;
-
 class Solution {
     boolean solution(String s) {
-        boolean answer = true;
-
-        Stack<Character> stack = new Stack<>();
         
-        for (char c : s.toCharArray()) {
-            if (c == '(') {
-                stack.push(c);
+        int count = 0;
+        
+        for (int i = 0; i < s.length(); i++) {
+            if (s.charAt(i) == '(') {
+                count++;
+            } else {
+                count--;
             }
             
-            if (c == ')') {
-                if (stack.isEmpty()) {
-                    return false;
-                }
-                stack.pop();
+            if (count < 0) {
+                break;
             }
         }
         
-        if (!stack.isEmpty()) {
-            answer = false;
-        }
-        
-        return answer;
+        return count == 0;
     }
 }
